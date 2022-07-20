@@ -3,15 +3,18 @@ package com.example.Tennis.models;
 import java.util.*;
 
 public class Partie {
-    String joueur1; // serv
-    String joueur2; // oppon
+    Joueur joueur1 = new Joueur("toto");
+    Joueur joueur2 = new Joueur("titi"); ;
     private List<String> scoreHistory;
     private final List<String> tennisScores = new ArrayList<String>(Arrays.asList("0", "15", "30", "40"));
+    private int jeuxJoueur1 = 0;
+    private int jeuxJoueur2 = 0;
     private Map<String, Integer> scores;
     public Partie(String joueur1, String joueur2)
     {
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
+
+        this.joueur1.nom = joueur1;
+        this.joueur2.nom = joueur2;
 
         scores = new LinkedHashMap<String, Integer>();
         scores.put(joueur1, 0);
@@ -25,44 +28,44 @@ public class Partie {
     }
     public boolean finDeJeux()
     {
-        return (scores.get(joueur1) > 3 || scores.get(joueur2) > 3) && (Math.abs(scores.get(joueur1) - scores.get(joueur2)) > 1);
+        return (scores.get(joueur1.nom) > 3 || scores.get(joueur2.nom) > 3) && (Math.abs(scores.get(joueur1.nom) - scores.get(joueur2.nom)) > 1);
     }
     private boolean egalite()
     {
-        return scores.get(joueur1) > 2 && scores.get(joueur2) > 2 && !finDeJeux();
+        return scores.get(joueur1.nom) > 2 && scores.get(joueur2.nom) > 2 && !finDeJeux();
     }
+
     public String reportScore()
     {
         if (finDeJeux())
         {
-            if (scores.get(joueur1) > scores.get(joueur2))
+            if (scores.get(joueur1.nom) > scores.get(joueur2.nom))
             {
 
-                return joueur1 + " wins";
+                return joueur1.nom + " gagne";
+
             }
             else
             {
-                return joueur2 + " wins";
+                return joueur2.nom + " gagne";
             }
-        }
-        else if (egalite())
+        }else if (egalite())
         {
-            if (scores.get(joueur1) > scores.get(joueur2))
+            if (scores.get(joueur1.nom) > scores.get(joueur2.nom))
             {
-                return "advantage " + joueur1;
+                return "avantage " + joueur1.nom + "\njeux décisif";
             }
-            else if (scores.get(joueur1) < scores.get(joueur2))
+            else if (scores.get(joueur1.nom) < scores.get(joueur2.nom))
             {
-                return "advantage " + joueur2;
+                return "avantage " + joueur2.nom + "\njeux décisif";
             }
             else
             {
-                return "deuce";
+                return "egalite";
             }
-        }
-        else
+        } else
         {
-            return tennisScores.get(scores.get(joueur1)) + "-" + tennisScores.get(scores.get(joueur2));
+            return tennisScores.get(scores.get(joueur1.nom)) + "-" + tennisScores.get(scores.get(joueur2.nom));
         }
     }
     public void incrementScore(String playerName)
@@ -75,6 +78,7 @@ public class Partie {
         {
             scores.put(playerName, scores.get(playerName) + 1);
             scoreHistory.add(reportScore());
+            System.out.println(scoreHistory);
         }
     }
     public String getScoreHistory()

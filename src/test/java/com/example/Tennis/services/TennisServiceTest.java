@@ -1,5 +1,6 @@
 package com.example.Tennis.services;
 
+import com.example.Tennis.models.Joueur;
 import com.example.Tennis.models.Partie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,20 +17,22 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class TennisServiceTest {
     private Partie partie;
-    private final String joueur1 = "toto";
-    private final String joueur2 = "titi";
+    private Joueur joueur1 = new Joueur("toto");
+    private Joueur joueur2 = new Joueur("titi");
 
     AutoCloseable closeable;
-    private void advanceGame(int incrementServer, int incrementOpponent)
+    private void advanceGame(int j1, int j2)
     {
-        for (int i = 0; i < incrementServer; i++) partie.incrementScore(joueur1);
-        for (int i = 0; i < incrementOpponent; i++) partie.incrementScore(joueur2);
+
+        for (int i = 0; i < j1; i++) partie.incrementScore(joueur1.toString());
+        for (int i = 0; i < j2; i++) partie.incrementScore(joueur2.toString());
     }
 
     @BeforeEach
     public void setup() throws IOException {
+
         closeable = MockitoAnnotations.openMocks(this);
-        partie = new Partie(joueur1,joueur2);
+        partie = new Partie(joueur1.toString(),joueur2.toString());
     }
     @AfterEach
     public void closeMocks() throws Exception {
@@ -44,7 +47,7 @@ public class TennisServiceTest {
     @Test
     @DisplayName("Devrait ajouter deux joueurs")
     public void AjoutJoueurs() {
-        new Partie(joueur1,joueur2);
+        new Partie(joueur1.toString(),joueur2.toString());
     }
     @Test
     @DisplayName("Devrait afficher le score de début de partie")
@@ -56,10 +59,10 @@ public class TennisServiceTest {
     @DisplayName("Devrait incrémenter les scrore ")
     public void incrémenterLesScoreDesJoueur()
     {
-        partie.incrementScore(joueur1);
+        partie.incrementScore(joueur1.toString());
         assertEquals("15-0", partie.reportScore());
 
-        partie.incrementScore(joueur2);
+        partie.incrementScore(joueur2.toString());
         assertEquals("15-15", partie.reportScore());
 
         advanceGame(2,0);
@@ -70,36 +73,36 @@ public class TennisServiceTest {
     public void retourneLhistoriqueDesScore()
     {
         for (int i = 0; i < 3; i++) {
-            partie.incrementScore(joueur1);
-            partie.incrementScore(joueur2);
+            partie.incrementScore(joueur1.toString());
+            partie.incrementScore(joueur2.toString());
         }
-        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce", partie.getScoreHistory());
+        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite", partie.getScoreHistory());
 
-        partie.incrementScore(joueur1);
-        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce\nadvantage " + joueur1,
+        partie.incrementScore(joueur1.toString());
+        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString()+"\njeux décisif",
                 partie.getScoreHistory());
 
-        partie.incrementScore(joueur2);
-        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce\nadvantage " + joueur1 +"\ndeuce",
+        partie.incrementScore(joueur2.toString());
+        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString() +"\njeux décisif"+"\negalite",
                 partie.getScoreHistory());
 
-        partie.incrementScore(joueur2);
-        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce\nadvantage " + joueur1 +"\ndeuce" + "\nadvantage " + joueur2,
+        partie.incrementScore(joueur2.toString());
+        assertEquals("0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString() + "\njeux décisif"+"\negalite" + "\navantage " + joueur2.toString()+"\njeux décisif",
                 partie.getScoreHistory());
 
-        partie.incrementScore(joueur1);
+        partie.incrementScore(joueur1.toString());
         assertEquals(
-                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce\nadvantage " + joueur1 +"\ndeuce" + "\nadvantage " + joueur2 + "\ndeuce",
+                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString()+ "\njeux décisif"+"\negalite" + "\navantage " + joueur2.toString()+ "\njeux décisif"+ "\negalite",
                 partie.getScoreHistory());
 
-        partie.incrementScore(joueur1);
+        partie.incrementScore(joueur1.toString());
         assertEquals(
-                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce\nadvantage " + joueur1 +"\ndeuce" + "\nadvantage " + joueur2 + "\ndeuce" + "\nadvantage " + joueur1,
+                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString() +"\njeux décisif"+"\negalite" + "\navantage " + joueur2.toString() +"\njeux décisif"+ "\negalite" + "\navantage " + joueur1.toString()+ "\njeux décisif" ,
                 partie.getScoreHistory());
 
-        partie.incrementScore(joueur1);
+        partie.incrementScore(joueur1.toString());
         assertEquals(
-                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\ndeuce\nadvantage " + joueur1 +"\ndeuce" + "\nadvantage " + joueur2 + "\ndeuce" + "\nadvantage " + joueur1 + "\n" + joueur1 + " wins",
+                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString()+"\njeux décisif" +"\negalite" + "\navantage " + joueur2.toString()+ "\njeux décisif"+ "\negalite" + "\navantage " + joueur1.toString()+ "\njeux décisif"+ "\n" + joueur1.toString() + " gagne",
                partie.getScoreHistory());
     }
     @Test
@@ -107,25 +110,25 @@ public class TennisServiceTest {
     public void retourneSiLeJoueur1GagneApresUnePartie()
     {
         advanceGame(3,3);
-        assertEquals("deuce", partie.reportScore());
+        assertEquals("egalite", partie.reportScore());
 
-        partie.incrementScore(joueur1);
-        assertEquals("advantage " + joueur1, partie.reportScore());
+        partie.incrementScore(joueur1.toString());
+        assertEquals("avantage " + joueur1+ "\njeux décisif", partie.reportScore());
 
-        partie.incrementScore(joueur2);
-        assertEquals("deuce", partie.reportScore());
+        partie.incrementScore(joueur2.toString());
+        assertEquals("egalite", partie.reportScore());
 
-        partie.incrementScore(joueur2);
-        assertEquals("advantage " + joueur2, partie.reportScore());
+        partie.incrementScore(joueur2.toString());
+        assertEquals("avantage " + joueur2 + "\njeux décisif", partie.reportScore());
 
-        partie.incrementScore(joueur1);
-        assertEquals("deuce", partie.reportScore());
+        partie.incrementScore(joueur1.toString());
+        assertEquals("egalite", partie.reportScore());
 
-        partie.incrementScore(joueur1);
-        assertEquals("advantage " + joueur1,partie.reportScore());
+        partie.incrementScore(joueur1.toString());
+        assertEquals("avantage " + joueur1+ "\njeux décisif",partie.reportScore());
 
-        partie.incrementScore(joueur1);
-        assertEquals(joueur1 + " wins", partie.reportScore());
+        partie.incrementScore(joueur1.toString());
+        assertEquals(joueur1 + " gagne", partie.reportScore());
     }
     @Test
     @DisplayName("Devrait retourner que la fonction finDeJeux fonctionne")
@@ -134,10 +137,10 @@ public class TennisServiceTest {
         advanceGame(3,3);
         assertEquals(false, partie.finDeJeux());
 
-        partie.incrementScore(joueur1);
+        partie.incrementScore(joueur1.toString());
         assertEquals(false, partie.finDeJeux());
 
-        partie.incrementScore(joueur1);
+        partie.incrementScore(joueur1.toString());
         assertEquals(true, partie.finDeJeux());
     }
     @Test
@@ -145,7 +148,7 @@ public class TennisServiceTest {
     public void retourneLeJoueur1Gagnant()
     {
         advanceGame(4, 0);
-        assertEquals(joueur1 + " wins", partie.reportScore());
+        assertEquals(joueur1.toString() + " gagne", partie.reportScore());
     }
 
     @Test
@@ -153,13 +156,26 @@ public class TennisServiceTest {
     public void retourneLeJoueur2Gagnant()
     {
         advanceGame(0,4);
-        assertEquals(joueur2 + " wins", partie.reportScore());
+        assertEquals(joueur2.toString() + " gagne", partie.reportScore());
     }
     @Test
     @DisplayName("Devrait retourner une egalité")
     public void retourneUneEgalite()
     {
-        advanceGame(1,1);
-        assertEquals("15-15", partie.reportScore());
+        advanceGame(3,3);
+        assertEquals("egalite", partie.reportScore());
+
     }
+    @Test
+    @DisplayName("Devrait retourner un avantage")
+    public void retourneUnAvantage()
+    {
+        advanceGame(3,3);
+        assertEquals("egalite", partie.reportScore());
+
+        partie.incrementScore(joueur1.toString());
+        assertEquals("avantage " + joueur1.toString()+ "\njeux décisif", partie.reportScore());
+
+    }
+
 }
