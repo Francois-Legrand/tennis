@@ -102,11 +102,11 @@ public class TennisServiceTest {
 
         partie.incrementScore(joueur1.toString());
         assertEquals(
-                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString()+"\njeux décisif" +"\negalite" + "\navantage " + joueur2.toString()+ "\njeux décisif"+ "\negalite" + "\navantage " + joueur1.toString()+ "\njeux décisif"+ "\n" + joueur1.toString() + " gagne",
+                "0-0\n15-0\n15-15\n30-15\n30-30\n40-30\negalite\navantage " + joueur1.toString()+"\njeux décisif" +"\negalite" + "\navantage " + joueur2.toString()+ "\njeux décisif"+ "\negalite" + "\navantage " + joueur1.toString()+ "\njeux décisif"+ "\n" + joueur1.toString() + " gagne, la partie et terminé",
                partie.getScoreHistory());
     }
     @Test
-    @DisplayName("Devrait retourner que le joueur 1 gagne")
+    @DisplayName("Devrait retourner que le joueur 1 gagne après une partie compliqué")
     public void retourneSiLeJoueur1GagneApresUnePartie()
     {
         advanceGame(3,3);
@@ -128,7 +128,7 @@ public class TennisServiceTest {
         assertEquals("avantage " + joueur1+ "\njeux décisif",partie.reportScore());
 
         partie.incrementScore(joueur1.toString());
-        assertEquals(joueur1 + " gagne", partie.reportScore());
+        assertEquals(joueur1 + " gagne, la partie et terminé", partie.reportScore());
     }
     @Test
     @DisplayName("Devrait retourner que la fonction finDeJeux fonctionne")
@@ -144,19 +144,19 @@ public class TennisServiceTest {
         assertEquals(true, partie.finDeJeux());
     }
     @Test
-    @DisplayName("Devrait retourner que le joueur1 gagne")
+    @DisplayName("Devrait retourner que le joueur1 gagne et que la partie est terminé")
     public void retourneLeJoueur1Gagnant()
     {
         advanceGame(4, 0);
-        assertEquals(joueur1.toString() + " gagne", partie.reportScore());
+        assertEquals(joueur1.toString() + " gagne, la partie et terminé", partie.reportScore());
     }
 
     @Test
-    @DisplayName("Devrait retourner que le joueur2 gagne")
+    @DisplayName("Devrait retourner que le joueur2 gagne et que la partie est terminé")
     public void retourneLeJoueur2Gagnant()
     {
         advanceGame(0,4);
-        assertEquals(joueur2.toString() + " gagne", partie.reportScore());
+        assertEquals(joueur2.toString() + " gagne, la partie et terminé", partie.reportScore());
     }
     @Test
     @DisplayName("Devrait retourner une egalité")
@@ -167,7 +167,7 @@ public class TennisServiceTest {
 
     }
     @Test
-    @DisplayName("Devrait retourner un avantage")
+    @DisplayName("Devrait retourner un avantage et un jeux décisif")
     public void retourneUnAvantage()
     {
         advanceGame(3,3);

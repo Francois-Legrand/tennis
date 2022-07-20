@@ -42,12 +42,12 @@ public class Partie {
             if (scores.get(joueur1.nom) > scores.get(joueur2.nom))
             {
 
-                return joueur1.nom + " gagne";
+                return joueur1.nom + " gagne, la partie et terminé";
 
             }
             else
             {
-                return joueur2.nom + " gagne";
+                return joueur2.nom + " gagne, la partie et terminé";
             }
         }else if (egalite())
         {
@@ -77,6 +77,7 @@ public class Partie {
         else
         {
             scores.put(playerName, scores.get(playerName) + 1);
+            System.out.println("Set " +scores);
             scoreHistory.add(reportScore());
             System.out.println(scoreHistory);
         }
